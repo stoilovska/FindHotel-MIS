@@ -1,5 +1,6 @@
 import 'package:find_hotel_mis/firebaseOptions/firebase_options.dart';
 import 'package:find_hotel_mis/models/hotel.dart';
+import 'package:find_hotel_mis/widgets/HotelDetailPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -386,13 +387,20 @@ class HotelListPage extends StatelessWidget {
             );
           } else {
             final hotel = hotels[index - 1];
-            return ListTile(
-              title: Text(hotel.name),
-              subtitle: Text(hotel.location),
+            return GestureDetector(
               onTap: () {
-                // Navigate to a detailed page for the selected hotel
-                // You can implement this based on your specific requirements
+                // Navigate to the HotelDetailPage when a hotel is tapped
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HotelDetailPage(hotel: hotel),
+                  ),
+                );
               },
+              child: ListTile(
+                title: Text(hotel.name),
+                subtitle: Text(hotel.location),
+              ),
             );
           }
         },
@@ -400,3 +408,4 @@ class HotelListPage extends StatelessWidget {
     );
   }
 }
+
