@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
@@ -49,7 +49,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   void _navigateToLogin() {
     Future.delayed(Duration.zero, () {
       Navigator.pushReplacementNamed(context, '/login');
@@ -66,8 +65,12 @@ class _MyHomePageState extends State<MyHomePage> {
         1.0,
       ),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        backgroundColor: Color.fromRGBO(
+          (0.84 * 255).round(),
+          (1.00 * 255).round(),
+          (0.99 * 255).round(),
+          1.0,
+        ),
       ),
       body: Center(
         child: Column(
@@ -75,12 +78,14 @@ class _MyHomePageState extends State<MyHomePage> {
             Image.asset('assets/img.png'),
             Container(
               margin: const EdgeInsets.only(top: 80.0),
-              child: const Text(
-                'Find the hotel for you!',
-                style: TextStyle(
-                  fontSize: 38.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueGrey,
+              child: const Center(
+                child: Text(
+                  'Find the perfect hotel for you!',
+                  style: TextStyle(
+                      fontSize: 38.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
@@ -117,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
 class AuthScreen extends StatefulWidget {
   final bool isLogin;
 
@@ -131,7 +137,7 @@ class AuthScreenState extends State<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
-  GlobalKey<ScaffoldMessengerState>();
+      GlobalKey<ScaffoldMessengerState>();
 
   Future<void> _authAction() async {
     try {
@@ -211,45 +217,93 @@ class AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: widget.isLogin ? const Text("Login") : const Text("Register"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: "Email"),
-            ),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: "Password"),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _authAction,
-              child: Text(widget.isLogin ? "Sign In" : "Register"),
-            ),
-            if (!widget.isLogin)
-              ElevatedButton(
-                onPressed: _navigateToLogin,
-                child: const Text('Already have an account? Login'),
-              ),
-            if (widget.isLogin)
-              ElevatedButton(
-                onPressed: _navigateToRegister,
-                child: const Text('Create an account'),
-              ),
-            TextButton(
-              onPressed: _navigateToHome,
-              child: const Text('Back to Main Screen'),
-            ),
-          ],
+        title: widget.isLogin ? const Text("Sign In") : const Text("Sign Up"),
+        backgroundColor: Color.fromRGBO(
+          (0.84 * 255).round(),
+          (1.00 * 255).round(),
+          (0.99 * 255).round(),
+          1.0,
         ),
+      ),
+      backgroundColor: Color.fromRGBO(
+        (0.84 * 255).round(),
+        (1.00 * 255).round(),
+        (0.99 * 255).round(),
+        1.0,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/img.png'),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                      labelText: "Enter your email",
+                      filled: true,
+                      fillColor: Colors.white),
+                ),
+                const SizedBox(height: 15),
+                TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      labelText: "Enter your password",
+                      filled: true,
+                      fillColor: Colors.white),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _authAction,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey, // Background color
+                  ),
+                  child: Text(
+                    widget.isLogin ? "Sign In" : "Sign Up",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                if (!widget.isLogin)
+                  ElevatedButton(
+                    onPressed: _navigateToLogin,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey, // Background color
+                    ),
+                    child: const Text(
+                      'Already have an account? Sign In',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                if (widget.isLogin)
+                  ElevatedButton(
+                    onPressed: _navigateToRegister,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey, // Background color
+                    ),
+                    child: const Text(
+                      'Create an account',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                TextButton(
+                  onPressed: _navigateToHome,
+                  child: const Text('Back to Main Screen'),
+                ),
+              ],
+            )),
       ),
     );
   }
 }
-
