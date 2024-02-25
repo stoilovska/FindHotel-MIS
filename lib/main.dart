@@ -1,4 +1,5 @@
 import 'package:find_hotel_mis/firebaseOptions/firebase_options.dart';
+import 'package:find_hotel_mis/models/hotel.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,6 +35,37 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MyHomePage(title: 'FindHotel'),
         '/login': (context) => const AuthScreen(isLogin: true),
         '/register': (context) => const AuthScreen(isLogin: false),
+        '/hotelList': (context) => HotelListPage(
+              hotels: [
+                Hotel(
+                  name: 'Luxury Hotel',
+                  location: '123 Main Street, Cityville',
+                  description: 'A luxurious hotel with breathtaking views.',
+                  phone: '+1 123-456-7890',
+                  map: 'https://maps.example.com/luxury-hotel',
+                  price: 250.0,
+                  distance: 2.5,
+                ),
+                Hotel(
+                  name: 'Cozy Inn',
+                  location: '456 Oak Avenue, Townsville',
+                  description: 'A cozy inn with a warm atmosphere.',
+                  phone: '+1 987-654-3210',
+                  map: 'https://maps.example.com/cozy-inn',
+                  price: 120.0,
+                  distance: 1.8,
+                ),
+                Hotel(
+                  name: 'Mountain Retreat',
+                  location: '789 Pine Road, Hilltop',
+                  description: 'A retreat nestled in the mountains.',
+                  phone: '+1 555-123-4567',
+                  map: 'https://maps.example.com/mountain-retreat',
+                  price: 180.0,
+                  distance: 5.2,
+                )
+              ],
+            ),
       },
     );
   }
@@ -150,7 +182,7 @@ class AuthScreenState extends State<AuthScreen> {
             "Login Successful",
             "Welcome back! Your login was a success. "
                 "Explore, engage, and enjoy your time with us.");
-        _navigateToHome();
+        _navigateToHotelList();
       } else {
         await _auth.createUserWithEmailAndPassword(
           email: _emailController.text,
@@ -193,6 +225,12 @@ class AuthScreenState extends State<AuthScreen> {
         );
       },
     );
+  }
+
+  void _navigateToHotelList() {
+    Future.delayed(Duration.zero, () {
+      Navigator.pushReplacementNamed(context, '/hotelList');
+    });
   }
 
   void _navigateToHome() {
@@ -303,6 +341,61 @@ class AuthScreenState extends State<AuthScreen> {
                 ),
               ],
             )),
+      ),
+    );
+  }
+}
+
+class HotelListPage extends StatelessWidget {
+  final List<Hotel> hotels;
+
+  const HotelListPage({super.key, required this.hotels});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(
+          (0.84 * 255).round(),
+          (1.00 * 255).round(),
+          (0.99 * 255).round(),
+          1.0,
+        ),
+      ),
+      backgroundColor: Color.fromRGBO(
+        (0.84 * 255).round(),
+        (1.00 * 255).round(),
+        (0.99 * 255).round(),
+        1.0,
+      ),
+      body: ListView.builder(
+        itemCount: hotels.length + 1, // +1 for the header
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            // This is the header
+            return Column(
+              children: [
+                Image.asset(
+                  'assets/img.png',
+                  height: 120.0,
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(height: 47.0),
+              ],
+            );
+          } else {
+            final hotel = hotels[index - 1];
+            return ListTile(
+              title: Text(hotel.name),
+              subtitle: Text(hotel.location),
+              onTap: () {
+                // Navigate to a detailed page for the selected hotel
+                // You can implement this based on your specific requirements
+              },
+            );
+          }
+        },
       ),
     );
   }
